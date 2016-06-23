@@ -12,5 +12,10 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
 //= require_tree .
+//= require jquery-ui.min.js
+//= require jquery.min.js
+//= require app-components.js
+//= require genetics.js
+//= require bootstrap.min.js
+

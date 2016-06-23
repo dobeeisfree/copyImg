@@ -1,23 +1,289 @@
+<div id="wrap">
+  <div class="container">
+   
+   
+   
+    <center>
+      <div class="headline">
+        <h1 class="headline-title">
+          도형으로 이미지 그리기<br>
+          <small>유전자 알고리즘<br>이미지 진화 시뮬레이션</small>
+        </h1>
+      </div>
+    </center>
 
-<div class="container" style="margin-top:72px;">
-    <h1>이미지 그리기</h1>
-    <%= image_tag (@img_name) %>
-    <%= image_tag (@img_name) %>
-    <br>
-    <br>
-    <div class="btn-group">
-      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        이미지를 고르세요 <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu">
-        <li><a href="#">모나리자</a></li>
-        <li><a href="#">피카츄</a></li>
-        <li><a href="#">고흐</a></li>
-        <li><a href="#">뭉크</a></li>
-        <!--
-        <li role="separator" class="divider"></li>
-        <li><a href="#">Separated link</a></li>
-        -->
-      </ul>
+
+
+
+    <div class="row">
+      <center>
+        <!-- pictures -->
+        <div id="pictureframe">
+          <canvas id="referenceCanvas" class="picture" width="350" height="350" style="margin-right: 4px;"></canvas>
+          <canvas id="outputCanvas" class="picture" width="350" height="350" style="margin-left: 4px;"></canvas>
+          <!-- button bar -->
+          <div class="btn-toolbar">
+            <div class="btn-group">
+              <!-- image dropdown -->
+              <a class="btn dropdown-toggle btn-inverse control-btn"
+                 data-toggle="dropdown" href="#"
+                 style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                이미지 선택 &nbsp;<span class="caret"></span>
+              </a>
+              <ul id="stock-image-menu" class="dropdown-menu" style="text-align: start;">
+                
+                <li><a href="#">gogh</a></li>
+                <li><a href="#">pica</a></li>
+                <li><a href="#">scream</a></li>
+              </ul>
+            </div>
+            <!-- /.btn-group -->
+            <div class="btn-group">
+              <button id="stop" class="btn control-btn btn-danger"
+                      style="margin-left: 230px;" disabled>
+                정지
+              </button>
+
+              <button id="start" class="btn control-btn btn-success"
+                      disabled>
+                시작
+              </button>
+            </div>
+          </div>
+        </div> <!-- /#pictureframe -->
+      </center>
     </div>
+
+
+          
+          
+          
+        <div class="tabbable" style="margin:0 auto;">
+          <ul class="nav nav-tabs">
+            <li class="active">
+              <a href="#pane-configuration" data-toggle="tab">
+                <i class="icon-cog icon-large"></i> 환경설정
+              </a>
+            </li>
+
+            <li>
+              <a href="#pane-analytics" data-toggle="tab">
+                <i class="icon-beaker icon-large"></i> 통계
+              </a>
+            </li>
+          </ul>
+
+
+
+          <div class="tab-content">
+            <div id="pane-configuration" class="tab-pane active">
+
+
+
+              <center><h5 style="margin-top: 0px; padding-top: 15px;"><b>유전 설정</b></h5></center>
+              <table class="table conf-table">
+                <tr class="conf-option" data-toggle="tooltip"
+                    title="문제의 해집단의 수를 결정합니다.">
+                  <td style="width: 160px;">
+                    Population Size
+                  </td>
+                  <td><div id="population-size-slider" class="conf-slider"></div></td>
+                  <td id="population-size" style="width: 80px;"></td>
+                <tr/>
+
+                <tr class="conf-option" data-toggle="tooltip"
+                    title="주어진 세대로부터 염색체의 수를 결정합니다. 낮은 퍼센트는 더 적은 자손번식이 될 겁니다.">
+                  <td>
+                    Selection Cutoff
+                  </td>
+                  <td><div id="cutoff-slider" class="conf-slider"></div></td>
+                  <td id="cutoff"></td>
+                <tr/>
+
+                <tr class="conf-option" data-toggle="tooltip"
+                    title="자손번식을 중, DNA 변이를 하게됩니다. 높은 찬스일수록 변이가 easy합니다.">
+                  <td>
+                    Mutation Chance
+                  </td>
+                  <td><div id="mutation-chance-slider" class="conf-slider"></div></td>
+                  <td id="mutation-chance"></td>
+                <tr/>
+
+                <tr class="conf-option" data-toggle="tooltip"
+                    title="변이를 하고 있을 때, 도입 될 랜덤 데이터의 양입니다.">
+                  <td>
+                    Mutation Amount
+                  </td>
+                  <td><div id="mutation-amount-slider" class="conf-slider"></div></td>
+                  <td id="mutation-amount"></td>
+                <tr/>
+
+                <tr class="conf-option" data-toggle="tooltip"
+                    title="버튼을 활성화할경우, 유전자는 부모로부터 랜덤하게 유전상속을 받습니다. 아닌 경우 부모에게서 동등하게 유전상속을 받습니다">
+                  <td>
+                    Random Inheritance
+                  </td>
+                  <td></td>
+                  <td><label>
+                      <div class="switch switch-square">
+                        <input id="random-inheritance" type="checkbox" />
+                      </div>
+                  </label></td>
+                <tr/>
+
+                <tr class="conf-option" data-toggle="tooltip"
+                    title="적합도 알고리즘이 선형적이냐, 증폭적으로 판단을 하게 할지 결정합니다.">
+                  <td>
+                    Difference squared
+                  </td>
+                  <td></td>
+                  <td><label>
+                      <div class="switch switch-square">
+                        <input id="diff-squared" type="checkbox"
+                               checked="" />
+                      </div>
+                  </label></td>
+                <tr/>
+                
+                <tr class="conf-option" data-toggle="tooltip"
+                    title="버튼이 활성화 될 경우, 염색체의 생명주기는 본인이 가진 적합도에 따릅니다. 따라서 강한 염색체는 다음세대에도 살아있습니다.">
+                  <td>
+                    Fittest survive
+                  </td>
+                  <td></td>
+                  <td><label>
+                      <div class="switch switch-square">
+                        <input id="fittest-survive" type="checkbox" />
+                      </div>
+                  </label></td>
+                <tr/>
+              </table>
+
+
+
+
+              <!-- graphics settings -->
+              <center><h5><b>그래픽</b></h5></center>
+
+              <table class="table conf-table">
+
+                <tr class="conf-option" data-toggle="tooltip"
+                    title="높은 내부해상도는 피트니스함수의 정확성을 보장합니다. 하지만 많이 느려집니다..!">
+                  <td style="width: 160px;">
+                    Internal Resolution
+                  </td>
+                  <td><div id="resolution-slider" class="conf-slider"></div></td>
+                  <td id="resolution" style="width: 80px;"></td>
+                <tr/>
+
+                <tr class="conf-option" data-toggle="tooltip"
+                    title="그릴 때의 폴리곤의 수를 결정합니다. 높은 수일수록 그림이 디테일해질 겁니다.">
+                  <td>
+                    Number of polygons
+                  </td>
+                  <td><div id="polygons-slider" class="conf-slider"></div></td>
+                  <td id="polygons"></td>
+                <tr/>
+
+                <tr class="conf-option" data-toggle="tooltip"
+                    title="각각의 폴리곤이 가질 점을 결정합니다. 3이라면 삼각형이 만들어지겠죠!">
+                  <td>
+                    Number of vertices
+                  </td>
+                  <td><div id="vertices-slider" class="conf-slider"></div></td>
+                  <td id="vertices"></td>
+                <tr/>
+
+                <tr class="conf-option" data-toggle="tooltip"
+                    title="폴리곤을 컬러로 채울지 선으로만 할지 결정합니다.">
+                  <td>
+                    Fill polygons
+                  </td>
+                  <td></td>
+                  <td><label>
+                      <div class="switch switch-square">
+                        <input id="fill-polygons" type="checkbox"
+                               checked="" />
+                      </div>
+                  </label></td>
+                <tr/>
+              </table>
+              
+              
+              
+            </div>
+
+
+
+            <div id="pane-analytics" class="tab-pane">
+              <center><h5 style="margin-top: 0px; padding-top: 15px;"><b>실시간 통계</b></h5></center>
+              <table id="analytics-table"
+                     class="table table-bordered table-striped">
+                <tr>
+                  <td>경과 시간</td>
+                  <td id="elapsed-time"></td>
+                </tr>
+                <tr>
+                  <td>generations 수</td>
+                  <td id="number-of-generations"></td>
+                </tr>
+                <tr>
+                  <td>평균시간 (per generation)</td>
+                  <td id="time-per-generation"></td>
+                </tr>
+                <tr>
+                  <td>평균시간 (per improvement)</td>
+                  <td id="time-per-improvement"></td>
+                </tr>
+                <tr>
+                  <td>현재 fitness</td>
+                  <td id="current-fitness"></td>
+                </tr>
+                <tr>
+                  <td>높은 fitness</td>
+                  <td id="highest-fitness"></td>
+                </tr>
+                <tr>
+                  <td>낮은 fitness</td>
+                  <td id="lowest-fitness"></td>
+                </tr>
+              </table>
+            </div>
+
+
+
+          </div> <!-- /.tab-content -->
+        </div> <!-- /.tabbable -->
+
+
+
+<div class="footer">
+  <div class="container wrapper">
+    <b>By</b>
+    <br>SSU GlobalMedia 20142579 황주비
+    <br>jubee0124@gmail.com
+  </div>
 </div>
+
+
+
+
+  </div>
+</div>
+
+
+
+
+
+<!--준비되는 이미지 -->
+<%= image_tag('mona.jpg', :alt=>'모나리자', :style=>'display:none;', :id=>'referenceImage') %>
+<!--계산될 공간 -->
+<canvas id="workingCanvas" width="1" height="1" style="display: none;"></canvas>
+
+
+
+
+
+<%= javascript_include_tag 'genetics'%>
+<%= javascript_include_tag 'bootstrap.min' %>
+<%= javascript_include_tag 'app-components' %>
